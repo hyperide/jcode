@@ -44,14 +44,9 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          ssh-key: ${{ secrets.DEPLOY_KEY }}
+          persist-credentials: false
           submodules: recursive
           fetch-depth: 0
-
-      - name: Configure SSH for cargo git dependencies
-        uses: webfactory/ssh-agent@dc588b651fe13675774614f8e6a936a468676387
-        with:
-          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
 
       - uses: dtolnay/rust-toolchain@39008827e6b4319a349e9a42dfc90579dd25f1ca
         with:
