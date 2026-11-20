@@ -13,6 +13,9 @@ on:
           - arm64
           - both
 
+permissions:
+  contents: read
+
 concurrency:
   group: windows-smoke-${{ github.ref }}-${{ github.event.inputs.target || 'x64' }}
   cancel-in-progress: true
@@ -28,22 +31,22 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 150
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           fetch-depth: 0
 
-      - uses: ilammy/msvc-dev-cmd@v1
+      - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756
         with:
           arch: amd64
 
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@39008827e6b4319a349e9a42dfc90579dd25f1ca
         with:
           targets: x86_64-pc-windows-msvc
 
-      - uses: mozilla-actions/sccache-action@v0.0.7
+      - uses: mozilla-actions/sccache-action@054db53350805f83040bf3e6e9b8cf5a139aa7c9
         continue-on-error: true
 
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0
         with:
           key: windows-smoke-x64
           cache-all-crates: "true"
@@ -127,7 +130,7 @@ jobs:
 
       - name: Upload Windows e2e diagnostics
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: windows-smoke-e2e-diagnostics-x64
           path: ${{ runner.temp }}/jcode-windows-e2e-logs
@@ -160,22 +163,22 @@ jobs:
     runs-on: windows-11-arm
     timeout-minutes: 35
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           fetch-depth: 0
 
-      - uses: ilammy/msvc-dev-cmd@v1
+      - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756
         with:
           arch: amd64_arm64
 
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@39008827e6b4319a349e9a42dfc90579dd25f1ca
         with:
           targets: aarch64-pc-windows-msvc
 
-      - uses: mozilla-actions/sccache-action@v0.0.7
+      - uses: mozilla-actions/sccache-action@054db53350805f83040bf3e6e9b8cf5a139aa7c9
         continue-on-error: true
 
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0
         with:
           key: windows-smoke-arm64
           cache-all-crates: "true"
